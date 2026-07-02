@@ -73,7 +73,7 @@
             pointer-events: none;
         }
 
-        /* --- 2. Main Cover --- */
+        /* --- 2. Main Cover (PERBAIKAN STRUKTUR POSISI DI SINI) --- */
         #main-cover {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -81,17 +81,19 @@
             background-size: cover;
             display: flex; 
             flex-direction: column; 
-            justify-content: center; 
+            justify-content: flex-end; /* Dorong konten ke area bawah gambar latar belakang secara konsisten */
             align-items: center; 
             text-align: center; 
-            padding: 60px 20px; 
+            padding-bottom: 12%; /* Memberikan jarak aman dari bawah layar hp/komputer */
+            padding-left: 20px;
+            padding-right: 20px;
             z-index: 50;
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
         }
         
         .guest-container { 
-            margin-top: 550px;        
-            margin-bottom: 3px;    
+            margin-top: 0; /* Menghapus margin statis goib yang merusak layout */
+            margin-bottom: 15px; /* Jarak aman konstan ke tombol open */
         }
         
         .guest-title { 
@@ -121,9 +123,9 @@
             cursor: pointer;
             text-transform: uppercase; 
             letter-spacing: 2px; 
-            margin-top: 15px;       
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
             transition: all 0.3s ease;
+            margin-top: 0;
         }
         .btn-open:hover {
             background-color: #55483c;
@@ -1154,8 +1156,6 @@
 
     <script>
         const TARGET_COUNTDOWN = "2026-07-12T00:00:00"; 
-        
-        // PASTE URL WEB APP APPS SCRIPT ANDA DI SINI
         const WEB_APP_URL = "PASANG_URL_WEB_APP_ANDA_DISINI";
 
         let dataUcapan = [
@@ -1458,7 +1458,7 @@
         }
 
         function ambilDataUcapan() {
-            if (WEB_APP_URL === "PASANG_URL_WEB_APP_ANDA_DISINI") {
+            if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec") {
                 renderUcapan();
                 return;
             }
@@ -1494,7 +1494,7 @@
                 return;
             }
 
-            if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exechttps://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec") {
+            if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec") {
                 dataUcapan.unshift({ nama, status, teks });
                 inputNama.value = "";
                 inputMesej.value = "";
@@ -1528,7 +1528,6 @@
             })
             .catch(err => {
                 console.error("Error saat mengirim:", err);
-                // Fallback lokal jika jaringan error
                 dataUcapan.unshift({ nama, status, teks });
                 inputNama.value = "";
                 inputMesej.value = "";
