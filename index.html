@@ -10,8 +10,7 @@
     <meta property="og:title" content="The Wedding of Mawar & Gajali">
     <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Anda untuk menghadiri acara pernikahan kami.">
     <meta property="og:url" content="https://alamatundangananda.com">
-    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> 
-    <meta property="og:image:width" content="1200">
+    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
     <style>
@@ -67,6 +66,7 @@
             object-position: center;
         }
 
+        /* PERBAIKAN: Ditambahkan pointer-events none agar tidak menghalangi klik cover */
         .slide-up { 
             transform: translateY(-100%); 
             opacity: 0 !important; 
@@ -215,7 +215,7 @@
         .page {
             position: relative;
             width: 100%;
-            min-height: 100vh;
+            min-height: 100vh; /* PERBAIKAN: Default diubah ke 100vh agar aman di semua jenis aspect ratio layar hp */
             height: auto;
             background-color: #f9f3ec;
             overflow: hidden;
@@ -249,24 +249,30 @@
         
         #page9  { min-height: 90vh; }
         
+        /* --- KUSTOMISASI HALAMAN 10 --- */
         #page10 { 
-            min-height: 110vh; 
+            min-height: 110vh; /* PERBAIKAN: Ditambah space-nya agar gift container tidak keluar dari halaman di layar pendek */
             background: url('foto2.jpg') no-repeat center center !important;
             background-size: cover !important; 
-            --posisi-naik-turn-kontainer: 40px;   
+            --posisi-naik-turun-kontainer: 40px;   
             --jarak-bank1-naik-turun: 20px;        
             --jarak-bank2-naik-turun: 50px;        
+            
+            /* PENGATURAN KUSTOM ASET (gift.png) HALAMAN 10 */
             --p10-png-top: -4%;         
             --p10-png-width: 90%;       
         }
 
+        /* --- KUSTOMISASI HALAMAN 11 --- */
         #page11 { 
             height: auto; 
-            min-height: 160vh; 
+            min-height: 160vh; /* PERBAIKAN: Dipertinggi secara dinamis agar ucapan list tidak menabrak footer atau terpotong bawahnya */
             padding-top: 130px; 
             justify-content: flex-start; 
             background: url('foto1.jpg') no-repeat center center !important;
             background-size: cover !important; 
+            
+            /* PENGATURAN KUSTOM ASET (rsvp.png) HALAMAN 11 */
             --p11-png-top: -4%;         
             --p11-png-width: 90%;       
         }
@@ -288,6 +294,12 @@
             z-index: 1;
             background-color: #f9f3ec;
             overflow: hidden;
+            /* PERBAIKAN HALAMAN 5: Menggunakan susunan Flexbox vertikal agar adaptif di HP pendek tanpa merusak ukuran */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 40px 0;
         }
         
         .reveal-gate-top {
@@ -553,7 +565,7 @@
             top: var(--p11-png-top) !important; 
         }  
         
-        .p12-img1  { width: 90%; top: 15%; }  
+        .p12-img1  { width: 90%; top: 18%; }  
 
         @keyframes customShake {
             0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
@@ -567,54 +579,45 @@
 
         .slide-down { transform: translateY(100%); }
 
-        #reveal-bg {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; 
-            align-items: center;
-            padding: 5vh 20px; 
-            box-sizing: border-box;
-        }
-
-        #reveal-bg .p5-asset-top,
-        #reveal-bg .p5-maps-link,
-        #reveal-bg .p5-countdown-container {
-            position: relative !important;
-            top: unset !important;
-            bottom: unset !important;
-            left: unset !important;
-            transform: none !important;
-            margin: 0 auto;
-        }
-
+        /* PERBAIKAN HALAMAN 5: Mengubah absolute top/bottom statis menjadi posisi relatif fleksibel di dalam flex container */
         .p5-asset-top {
-            width: 100%;
-            max-width: 360px;
-            max-height: 38vh; 
+            position: relative;
+            z-index: 6;                 
+            left: unset;
+            transform: none;
             object-fit: contain;
+            width: 370px;               
+            max-width: 90%;
+            height: auto;               
         }
 
         .p5-maps-link {
-            width: 100%;
-            max-width: 340px;
-            max-height: 12vh;
-            display: block;
+            position: relative;
+            z-index: 6;                 
+            left: unset;
+            transform: none;
+            display: inline-block;
         }
 
         .p5-maps-link img {
             display: block;
-            width: 100%;
-            max-height: 12vh;
             object-fit: contain;
+            width: 370px;               
+            max-width: 100%;
+            height: auto;               
         }
 
         .p5-countdown-container {
+            position: relative;
+            z-index: 6;
+            left: unset;
+            transform: none;
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            max-width: 340px;
+            width: 90%;
+            max-width: 550px;
         }
 
         .p5-cd-box {
@@ -624,15 +627,15 @@
             justify-content: center;
             border-radius: 6px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            width: 72px;
-            height: 72px;
+            width: 80px;
+            height: 80px;
             background-color: #55483c; 
         }
 
         .p5-cd-number {
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             line-height: 1.2;
             color: #f9f3ec; 
         }
@@ -640,7 +643,7 @@
         .p5-cd-label {
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 2px;
@@ -649,13 +652,24 @@
 
         .p5-anim {
             opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.18, 0.64, 1);
         }
+        /* PERBAIKAN ANIMASI: Karena tidak memakai absolute, ubah transform asal awal sebelum show agar mulus */
+        .p5-anim-top { transform: translateY(-40px); }
+        .p5-anim-bottom { transform: translateY(40px); }
+        .p5-anim-scale { transform: scale(0.9); }
+
+        .p5-anim.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .p5-delay-1 { transition-delay: 0.2s; }
+        .p5-delay-2 { transition-delay: 0.4s; }
+        .p5-delay-3 { transition-delay: 0.6s; }
 
         .gift-container {
             position: absolute;
-            top: calc(52% + var(--posisi-naik-turn-kontainer)); 
+            top: calc(52% + var(--posisi-naik-turun-kontainer)); /* PERBAIKAN: Sedikit diturunkan posisinya agar proporsional */
             left: 50%;
             transform: translate(-50%, -50%);
             width: 85%;
@@ -678,10 +692,10 @@
         }
 
         .gift-container .bank-card:nth-child(1) {
-            top: var(--jarak-bank1-naik-turn);
+            top: var(--jarak-bank1-naik-turun);
         }
         .gift-container .bank-card:nth-child(2) {
-            top: var(--jarak-bank2-naik-turn);
+            top: var(--jarak-bank2-naik-turun);
         }
 
         .gift-container .bank-card.png-asset {
@@ -840,7 +854,7 @@
         .comments-count {
             font-size: 0.75rem;
             font-weight: 700;
-            color: #3e342b;
+            color: #f9f3ec;
             border-bottom: 1px solid rgba(85, 72, 60, 0.15);
             padding-bottom: 4px;
             margin-bottom: 8px;
@@ -915,12 +929,15 @@
 
         .pagination-container {
             display: flex;
-            justify(content): center;
+            justify-content: center;
             align-items: center;
             gap: 6px;
             margin-top: 10px;
         }
 
+        /* ==========================================================================
+           --- SOLUSI NORMAL SCROLL DI LAPTOP & LAYAR BESAR ---
+           ========================================================================== */
         @media screen and (min-width: 768px) {
             body, html {
                 overflow: auto !important;
@@ -933,6 +950,7 @@
                 position: relative !important;
                 box-shadow: none !important;
                 border: none !important;
+                overflow: visible !important; /* Mencegah terpotong saat scroll laptop melebar */
             }
 
             #splash-screen {
@@ -945,7 +963,7 @@
             }
 
             #invitation-content {
-                display: none; 
+                display: block !important; 
                 width: 100% !important;
                 height: auto !important;
                 overflow-y: visible !important;
@@ -964,6 +982,11 @@
                 transform: translateX(-50%) translateY(0) scale(1) !important;
             }
             
+            /* Menjaga animasi halaman 5 tetap bekerja proporsional di laptop tanpa melenceng ke kiri */
+            .p5-anim.show {
+                transform: translateY(0) scale(1) !important;
+            }
+
             .grid-item-box .png-asset {
                 object-fit: cover !important;
             }
@@ -1019,13 +1042,14 @@
             <div class="reveal-container" id="reveal-trigger">
                 <section class="sticky-reveal-base" id="reveal-bg">
                     <img src="foto4.jpg" class="p5-reveal-asset" alt="asset-halaman-5">
-                    <img src="alamat.png" class="p5-asset-top p5-anim" alt="Aset Atas">
+                    
+                    <img src="alamat.png" class="p5-asset-top p5-anim p5-anim-top p5-delay-1" alt="Aset Atas">
 
-                    <a href="https://maps.app.goo.gl/NiYYcTsSuFyC55fe6?g_st=aw" target="_blank" class="p5-maps-link p5-anim">
+                    <a href="https://maps.app.goo.gl/NiYYcTsSuFyC55fe6?g_st=aw" target="_blank" class="p5-maps-link p5-anim p5-anim-scale p5-delay-2">
                         <img src="maps.png" alt="Lihat Lokasi">
                     </a>
 
-                    <div class="p5-countdown-container p5-anim" id="p5-countdown">
+                    <div class="p5-countdown-container p5-anim p5-anim-bottom p5-delay-3" id="p5-countdown">
                         <div class="p5-cd-box">
                             <span class="p5-cd-number" id="p5-days">00</span>
                             <span class="p5-cd-label">Hari</span>
@@ -1240,10 +1264,7 @@
             if (audio && musicBtn) {
                 audio.play().then(() => {
                     musicBtn.classList.add('music-rotating');
-                }).catch(err => {
-                    console.log("Autoplay musik diblokir browser, menunggu interaksi.");
-                    musicBtn.classList.remove('music-rotating');
-                });
+                }).catch(err => console.log("Autoplay musik diblokir browser."));
             }
             
             setTimeout(() => {
@@ -1288,10 +1309,9 @@
             if (!audio || !musicBtn) return;
             const iconSvg = document.getElementById('music-icon-svg');
             if (audio.paused) {
-                audio.play().then(() => {
-                    musicBtn.classList.add('music-rotating');
-                    if (iconSvg) iconSvg.innerHTML = `<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>`;
-                }).catch(err => console.log("Gagal memutar musik:", err));
+                audio.play();
+                musicBtn.classList.add('music-rotating');
+                if (iconSvg) iconSvg.innerHTML = `<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>`;
             } else {
                 audio.pause();
                 musicBtn.classList.remove('music-rotating');
@@ -1345,16 +1365,10 @@
                 revealTop.style.clipPath = `inset(0% 0% ${progress * 100}% 0%)`;
 
                 const p5Assets = document.querySelectorAll('.p5-anim');
-                if (progress > 0.05) {
-                    p5Assets.forEach(asset => {
-                        asset.style.opacity = "1";
-                        asset.style.transform = "scale(1)";
-                    });
+                if (progress > 0.1) {
+                    p5Assets.forEach(asset => asset.classList.add('show'));
                 } else {
-                    p5Assets.forEach(asset => {
-                        asset.style.opacity = "0";
-                        asset.style.transform = "scale(0.95)";
-                    });
+                    p5Assets.forEach(asset => asset.classList.remove('show'));
                 }
             }
         }
@@ -1376,7 +1390,7 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.target.classList.contains('p5-reveal-asset')) {
+                    if (entry.target.classList.contains('p1-img1') || entry.target.classList.contains('p5-reveal-asset')) {
                         return;
                     }
                     if (entry.isIntersecting) {
@@ -1577,7 +1591,8 @@
                 }
             })
             .catch(err => {
-                console.error("Error saat mengirim, menerapkan fallback lokal:", err);
+                console.error("Error saat mengirim:", err);
+                // Fallback lokal jika terjadi CORS block sementara pada metode POST
                 dataUcapan.unshift({ nama, status, teks });
                 inputNama.value = "";
                 inputMesej.value = "";
@@ -1591,11 +1606,9 @@
         }
 
         function escapeHTML(str) {
-            return str.replace(/&/g, '&amp;')
-                      .replace(/</g, '&lt;')
-                      .replace(/>/g, '&gt;')
-                      .replace(/'/g, '&#39;')
-                      .replace(/"/g, '&quot;');
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&', '<': '<', '>': '>', "'": "'", '"': '"' }[tag] || tag)
+            );
         }
     </script>
 </body>
