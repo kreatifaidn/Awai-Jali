@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Minggu 12 Juli 2026 - Awai & Jali</title>
+    <title>Digital Invitation - Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
     
     <meta property="og:type" content="website">
     <meta property="og:title" content="The Wedding of Mawar & Gajali">
     <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Anda untuk menghadiri acara pernikahan kami.">
     <meta property="og:url" content="https://alamatundangananda.com">
-    <meta property="og:image" content="https://alamatundangananda.com/foto4.jpg"> <meta property="og:image:width" content="1200">
+    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
     <style>
@@ -97,7 +97,7 @@
         }
         
         .guest-title { 
-            font-size: 0.7rem;        
+            font-size: 0.6rem;        
             color: #55483c; 
             text-transform: uppercase; 
             letter-spacing: 3px; 
@@ -106,7 +106,7 @@
         
         .guest-name { 
             font-family: 'GreatVibesCustom', cursive, serif; 
-            font-size: 2rem;      
+            font-size: 1.8rem;      
             font-weight: normal; 
             color: #55483c; 
         }
@@ -928,6 +928,43 @@
             align-items: center;
             gap: 6px;
             margin-top: 10px;
+        }
+
+        /* ==========================================================================
+           --- SOLUSI FIXED LAYOUT UNTUK LAPTOP / SCREEN BESAR ---
+           Aturan di bawah ini HANYA berjalan jika lebar browser minimal 768px (Laptop/Tablet)
+           ========================================================================== */
+        @media screen and (min-width: 768px) {
+            body {
+                background-color: #e5dac9; /* Background luar frame laptop biar elegan */
+            }
+
+            /* Mengunci paksa container utama menjadi mode rasio HP di tengah layar laptop */
+            .app-container {
+                max-width: 450px !important; 
+                height: 95vh !important;
+                border-radius: 16px;
+                box-shadow: 0 20px 60px rgba(85, 72, 60, 0.25);
+                border: 6px solid #55483c; /* Membuat frame pelindung estetik */
+            }
+
+            /* Memperbaiki tinggi sticky-reveal agar pas di dalam batasan frame laptop */
+            .sticky-reveal-base, .reveal-gate-top {
+                height: 100% !important;
+            }
+            .reveal-container {
+                height: 150% !important;
+            }
+
+            /* Menyelaraskan ulang efek animasi asset ketika discroll di dalam frame */
+            .png-asset.show {
+                transform: translateX(-50%) translateY(0) scale(1) !important;
+            }
+            
+            /* Sisi keamanan agar grid-item-box foto aman */
+            .grid-item-box .png-asset {
+                object-fit: cover !important;
+            }
         }
     </style>
 </head>
