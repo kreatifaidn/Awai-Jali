@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>create by kreatifa.idn</title>
+    <title>kreatifa.idn-undangan digital</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
     
     <meta property="og:type" content="website">
-    <meta property="og:title" content="The Wedding of Awai & Jali">
+    <meta property="og:title" content="The Wedding of Mawar & Gajali">
     <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Anda untuk menghadiri acara pernikahan kami.">
-    <meta property="og:url" content="https://kreatifaidn.github.io/Awai-Jali/">
-    <meta property="og:image" content="foto4.jpg"> <meta property="og:image:width" content="1200">
+    <meta property="og:url" content="https://alamatundangananda.com">
+    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
     <style>
@@ -215,7 +215,7 @@
         .page {
             position: relative;
             width: 100%;
-            min-height: 80vh; 
+            min-height: 100vh; /* PERBAIKAN: Default diubah ke 100vh agar aman di semua jenis aspect ratio layar hp */
             height: auto;
             background-color: #f9f3ec;
             overflow: hidden;
@@ -226,32 +226,32 @@
         }
 
         /* PRESET CLASS TINGGI HALAMAN */
-        .h-short   { min-height: 60vh; }
-        .h-medium  { min-height: 80vh; }
-        .h-long    { min-height: 110vh; }
+        .h-short   { min-height: 80vh; }
+        .h-medium  { min-height: 100vh; }
+        .h-long    { min-height: 120vh; }
         .h-full    { min-height: 100vh; }
 
         /* Kustomisasi Spesifik per ID Halaman */
-        #page1  { min-height: 80vh; }
-        #page2  { min-height: 60vh; }
-        #page3  { min-height: 80vh; }
+        #page1  { min-height: 100vh; }
+        #page2  { min-height: 75vh; }
+        #page3  { min-height: 100vh; }
         #page6  { min-height: 170vh; } 
-        #page7  { min-height: 60vh; }
-        #page8  { min-height: 65vh; }
+        #page7  { min-height: 90vh; }
+        #page8  { min-height: 90vh; }
         
         #page8b { 
-            min-height: 80vh; 
+            min-height: 100vh; 
             padding: 60px 3px; 
             display: flex;
             justify-content: center;
             align-items: center;
         } 
         
-        #page9  { min-height: 75vh; }
+        #page9  { min-height: 90vh; }
         
         /* --- KUSTOMISASI HALAMAN 10 --- */
         #page10 { 
-            min-height: 95vh; 
+            min-height: 110vh; /* PERBAIKAN: Ditambah space-nya agar gift container tidak keluar dari halaman di layar pendek */
             background: url('foto2.jpg') no-repeat center center !important;
             background-size: cover !important; 
             --posisi-naik-turun-kontainer: 40px;   
@@ -266,7 +266,7 @@
         /* --- KUSTOMISASI HALAMAN 11 --- */
         #page11 { 
             height: auto; 
-            min-height: 110vh; 
+            min-height: 160vh; /* PERBAIKAN: Dipertinggi secara dinamis agar ucapan list tidak menabrak footer atau terpotong bawahnya */
             padding-top: 130px; 
             justify-content: flex-start; 
             background: url('foto1.jpg') no-repeat center center !important;
@@ -277,7 +277,7 @@
             --p11-png-width: 90%;       
         }
 
-        #page12 { min-height: 80vh; }
+        #page12 { min-height: 100vh; }
 
         /* --- SYSTEM REVEAL GATE --- */
         .reveal-container {
@@ -345,8 +345,8 @@
         /* --- UPDATE: HALAMAN GALERI --- */
         .gallery-frame {
             position: absolute;
-            width: 140%;             
-            height: 90%;            
+            width: 110%;             
+            height: 75%;            
             object-fit: contain;
             z-index: 1;
             pointer-events: none;
@@ -559,7 +559,7 @@
             top: var(--p11-png-top) !important; 
         }  
         
-        .p12-img1  { width: 90%; top: 10%; }  
+        .p12-img1  { width: 90%; top: 15%; }  
 
         @keyframes customShake {
             0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
@@ -662,7 +662,7 @@
 
         .gift-container {
             position: absolute;
-            top: calc(50% + var(--posisi-naik-turun-kontainer));
+            top: calc(52% + var(--posisi-naik-turun-kontainer)); /* PERBAIKAN: Sedikit diturunkan posisinya agar proporsional */
             left: 50%;
             transform: translate(-50%, -50%);
             width: 85%;
@@ -847,7 +847,7 @@
         .comments-count {
             font-size: 0.75rem;
             font-weight: 700;
-            color: #f9f3ec;
+            color: #3e342b;
             border-bottom: 1px solid rgba(85, 72, 60, 0.15);
             padding-bottom: 4px;
             margin-bottom: 8px;
@@ -1257,7 +1257,6 @@
             }
             
             setTimeout(() => {
-                // Di layar besar, setelah open cover, kita biarkan logic container mengalir secara alami
                 if (window.innerWidth >= 768) {
                     cover.style.display = 'none';
                     content.style.display = 'block';
@@ -1526,11 +1525,6 @@
         }
 
         function ambilDataUcapan() {
-            if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec") {
-                renderUcapan();
-                return;
-            }
-            
             fetch(`${WEB_APP_URL}?action=read`)
                 .then(response => response.json())
                 .then(data => {
@@ -1562,15 +1556,6 @@
                 return;
             }
 
-            if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec") {
-                dataUcapan.unshift({ nama, status, teks });
-                inputNama.value = "";
-                inputMesej.value = "";
-                ucapanCurrentPage = 1; 
-                renderUcapan();
-                return;
-            }
-
             btnSubmit.disabled = true;
             btnSubmit.innerText = "Mengirim...";
 
@@ -1585,7 +1570,7 @@
             })
             .then(response => response.json())
             .then(result => {
-                if(result.result === "success") {
+                if(result.result === "success" || result.status === "success") {
                     inputNama.value = "";
                     inputMesej.value = "";
                     ucapanCurrentPage = 1;
@@ -1596,6 +1581,7 @@
             })
             .catch(err => {
                 console.error("Error saat mengirim:", err);
+                // Fallback lokal jika terjadi CORS block sementara pada metode POST
                 dataUcapan.unshift({ nama, status, teks });
                 inputNama.value = "";
                 inputMesej.value = "";
