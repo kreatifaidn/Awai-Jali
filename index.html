@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Invitation - Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 0. LOCAL FONT REGISTRATION --- */
+        @font-face {
+            font-family: 'GreatVibesCustom';
+            src: url('GreatVibes.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* --- Reset & Base Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #f9f3ec;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- RASIO 9:16 CONTAINER --- */
+        .app-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            background-color: #f9f3ec;
+            overflow: hidden;
+        }
+
+        /* --- 1. Splash Screen --- */
+        #splash-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #f9f3ec;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100;
+            opacity: 1;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s ease-in-out;
+            overflow: hidden;
+        }
+        #splash-screen .bg-splash-full {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* PERBAIKAN: Ditambahkan pointer-events none agar tidak menghalangi klik cover */
+        .slide-up { 
+            transform: translateY(-100%); 
+            opacity: 0 !important; 
+            pointer-events: none;
+        }
+
+        /* --- 2. Main Cover --- */
+        #main-cover {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('cover.png') no-repeat center center;
+            background-size: cover;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 60px 20px; 
+            z-index: 50;
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        
+        .guest-container { 
+            margin-top: 550px;        
+            margin-bottom: 3px;    
+        }
+        
+        .guest-title { 
+            font-size: 0.7rem;        
+            color: #55483c; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            margin-bottom: 10px;    
+        }
+        
+        .guest-name { 
+            font-family: 'GreatVibesCustom', cursive, serif; 
+            font-size: 2rem;      
+            font-weight: normal; 
+            color: #55483c; 
+        }
+
+        .btn-open {
+            font-family: 'Montserrat', sans-serif; 
+            font-size: 0.85rem;        
+            font-weight: 600;
+            color: #55483c; 
+            background-color: transparent; 
+            border: 1.5px solid #55483c;
+            padding: 10px 32px;     
+            border-radius: 50px;     
+            cursor: pointer;
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-top: 15px;       
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+            transition: all 0.3s ease;
+        }
+        .btn-open:hover {
+            background-color: #55483c;
+            color: #fff;
+        }
+
+        /* --- 3. Invitation Content Area --- */
+        #invitation-content {
+            display: none; 
+            width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            background-color: #f9f3ec;
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        /* --- SIDE CONTROLS CONTAINER --- */
+        .side-controls {
+            position: absolute;
+            right: 15px; 
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            z-index: 99;
+            pointer-events: none;
+        }
+        
+        .side-controls .ctrl-btn {
+            width: 32px; 
+            height: 32px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            outline: none;
+            pointer-events: auto;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .side-controls.show .ctrl-btn {
+            opacity: 1;
+        }
+
+        .side-controls .ctrl-btn:active {
+            transform: scale(0.9);
+        }
+
+        .btn-nav-arrow {
+            border-radius: 8px;
+            background-color: rgba(249, 243, 236, 0.85);
+            padding: 6px;
+        }
+
+        .btn-music-ctrl {
+            border-radius: 50%;
+            background-color: #55483c;
+            padding: 6px;
+            color: #f9f3ec;
+        }
+
+        .btn-music-ctrl svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        /* --- ENGINE ANIMASI ROTASI MUSIK --- */
+        @keyframes rotateMusic {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .music-rotating {
+            animation: rotateMusic 4s linear infinite;
+        }
+
+        /* --- CONFIG PANJANG HALAMAN --- */
+        .page {
+            position: relative;
+            width: 100%;
+            min-height: 80vh; 
+            height: auto;
+            background-color: #f9f3ec;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* PRESET CLASS TINGGI HALAMAN */
+        .h-short   { min-height: 60vh; }
+        .h-medium  { min-height: 80vh; }
+        .h-long    { min-height: 110vh; }
+        .h-full    { min-height: 100vh; }
+
+        /* Kustomisasi Spesifik per ID Halaman */
+        #page1  { min-height: 80vh; }
+        #page2  { min-height: 60vh; }
+        #page3  { min-height: 80vh; }
+        #page6  { min-height: 170vh; } 
+        #page7  { min-height: 60vh; }
+        #page8  { min-height: 65vh; }
+        
+        #page8b { 
+            min-height: 80vh; 
+            padding: 60px 3px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        } 
+        
+        #page9  { min-height: 75vh; }
+        
+        /* --- KUSTOMISASI HALAMAN 10 --- */
+        #page10 { 
+            min-height: 95vh; 
+            background: url('foto2.jpg') no-repeat center center !important;
+            background-size: cover !important; 
+            --posisi-naik-turun-kontainer: 40px;   
+            --jarak-bank1-naik-turun: 20px;        
+            --jarak-bank2-naik-turun: 50px;        
+            
+            /* PENGATURAN KUSTOM ASET (gift.png) HALAMAN 10 */
+            --p10-png-top: -4%;         /* Posisi Naik-Turun (Ubah % atau px sesuai keinginan) */
+            --p10-png-width: 90%;       /* Ukuran Lebar Aset (Ubah % atau px) */
+        }
+
+        /* --- KUSTOMISASI HALAMAN 11 --- */
+        #page11 { 
+            height: auto; 
+            min-height: 110vh; 
+            padding-top: 130px; 
+            justify-content: flex-start; 
+            background: url('foto1.jpg') no-repeat center center !important;
+            background-size: cover !important; 
+            
+            /* PENGATURAN KUSTOM ASET (rsvp.png) HALAMAN 11 */
+            --p11-png-top: -4%;         /* Posisi Naik-Turun (Ubah % atau px sesuai keinginan) */
+            --p11-png-width: 90%;       /* Ukuran Lebar Aset (Ubah % atau px) */
+        }
+
+        #page12 { min-height: 80vh; }
+
+        /* --- SYSTEM REVEAL GATE --- */
+        .reveal-container {
+            position: relative;
+            width: 100%;
+            height: 150vh; 
+            background-color: #f9f3ec;
+        }
+        
+        .sticky-reveal-base {
+            position: -webkit-sticky; position: sticky; 
+            top: 0; 
+            height: 100vh; 
+            z-index: 1;
+            background-color: #f9f3ec;
+            overflow: hidden;
+        }
+        
+        .reveal-gate-top {
+            position: absolute; top: 0; left: 0; width: 100%; 
+            height: 100vh; 
+            z-index: 2;
+            clip-path: inset(0% 0% 0% 0%);
+            background-color: #f9f3ec !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .overlay-page {
+            position: relative; z-index: 4; background-color: #f9f3ec;
+        }
+
+        /* --- FIX: LAYOUT GRID 4 FOTO HALAMAN 8B --- */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px; 
+            width: 90%;
+            max-width: 420px;
+            margin: auto;
+        }
+        
+        .grid-item-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3 / 4; 
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            cursor: pointer;
+        }
+
+        .grid-item-box .png-asset {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform-origin: center center;
+        }
+
+        /* --- UPDATE: HALAMAN GALERI --- */
+        .gallery-frame {
+            position: absolute;
+            width: 140%;             
+            height: 90%;            
+            object-fit: contain;
+            z-index: 1;
+            pointer-events: none;
+            transform: translateY(-60px);
+        }
+        
+        .gallery-container {
+            position: relative; 
+            overflow: hidden; 
+            border-radius: 5px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            z-index: 2;
+            transform: translateY(8px);
+            width: 310px;  
+            height: 270px; 
+        }
+
+        .gallery-wrapper {
+            position: relative;
+            width: 100%; 
+            height: 100%; 
+        }
+
+        .gallery-item-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            border-radius: 4px;
+            opacity: 0; 
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1); 
+            z-index: 1;
+            --posisi-foto: center 20%; 
+        }
+
+        .gallery-item-wrapper.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        .gallery-item {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+            object-position: var(--posisi-foto); 
+        }
+
+        .gi-1 { transform: scale(1.0); }
+        .gi-2 { transform: scale(1.2); }
+        .gi-3 { transform: scale(1.0); }
+        .gi-4 { transform: scale(0.95); }
+        .gi-5 { transform: scale(1.15); }
+        .gi-6 { transform: scale(1.0); }
+        
+        .nav-btn {
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6); 
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; 
+            font-size: 1.2rem;       
+            width: 38px;            
+            height: 38px;           
+            border-radius: 50%; 
+            cursor: pointer; 
+            z-index: 50; 
+            transition: 0.3s;
+        }
+        .btn-left { left: 5px; }   
+        .btn-right { right: 5px; } 
+
+        .frame-info-text {
+            font-size: 0.65rem;
+            color: #55483c;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 50px;
+            font-weight: 600;
+            z-index: 5;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* LIGHTBOX SYSTEM */
+        .lightbox {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 200; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .lightbox-img { 
+            max-width: 90%;         
+            max-height: 75vh;       
+            border-radius: 8px; 
+            object-fit: contain; 
+        }
+        .lightbox-close { 
+            position: absolute; 
+            top: 20px;              
+            right: 20px;            
+            color: #fff; 
+            font-size: 2rem;        
+            cursor: pointer; 
+        }
+        .btn-download {
+            margin-top: 20px; 
+            font-family: 'Montserrat', sans-serif;
+            background: #fff; color: #000; border: none; 
+            padding: 12px 28px;     
+            border-radius: 30px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .normal-flow-page {
+            position: relative; z-index: 6; 
+            box-shadow: none;
+            overflow: hidden;
+        }
+
+        /* --- VENDOR FOOTER --- */
+        .custom-footer-logo {
+            position: relative; 
+            width: 100%; 
+            height: 12vh;            
+            min-height: 12vh;
+            background-color: #f9f3ec; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 10; 
+            border-top: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .custom-footer-logo img { 
+            width: 100%;
+            height: 100%;            
+            object-fit: cover; 
+            object-position: center;
+            opacity: 0.7; 
+        }
+
+        /* --- ENGINE ANIMASI ASSET PNG --- */
+        .png-asset { 
+            position: absolute; 
+            aspect-ratio: 3 / 4; 
+            object-fit: contain; 
+            opacity: 0; 
+            z-index: 5; 
+            left: 50%;
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.18, 0.64, 1);
+        }
+
+        .p5-reveal-asset {
+            position: absolute;
+            z-index: 5;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 1; 
+        }
+
+        .anim-top    { transform: translateX(-50%) translateY(-60px); }
+        .anim-bottom { transform: translateX(-50%) translateY(60px); }
+        .anim-left   { transform: translateX(-80%) translateY(0); }
+        .anim-right  { transform: translateX(20%) translateY(0); }
+        .anim-scale  { transform: scale(0.85); }
+
+        .grid-delay-1 { transition-delay: 0.1s !important; }
+        .grid-delay-2 { transition-delay: 0.2s !important; }
+        .grid-delay-3 { transition-delay: 0.3s !important; }
+        .grid-delay-4 { transition-delay: 0.4s !important; }
+
+        .png-asset.show { 
+            opacity: 1; 
+            transform: translateX(-50%) translateY(0) scale(1); 
+        }
+
+        .grid-item-box .png-asset.show {
+            opacity: 1;
+            transform: scale(1) translateY(0) translateX(0);
+        }
+
+        .p1-img1   { width: 90%; top: 10%; }  
+        .p2-img1   { width: 90%; top: 2%; }  
+        .p3-img1   { width: 100%; top: 14%; }  
+        .p4-img1   { width: 110%; top: 5%; }  
+        .p6-img1   { width: 230%; top: 3%; }  
+        .p7-img1   { width: 90%; top: 5%; }  
+        .p8-img1   { width: 90%; top: 10%; }  
+        
+        /* IMPLEMENTASI VARIABEL DINAMIS HALAMAN 10 */
+        .p10-img1  { 
+            width: var(--p10-png-width) !important; 
+            top: var(--p10-png-top) !important; 
+        }   
+        
+        /* IMPLEMENTASI VARIABEL DINAMIS HALAMAN 11 */
+        .p11-img1  { 
+            width: var(--p11-png-width) !important; 
+            top: var(--p11-png-top) !important; 
+        }  
+        
+        .p12-img1  { width: 90%; top: 10%; }  
+
+        @keyframes customShake {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-50%) translateY(0) rotate(-3deg); }
+            20%, 40%, 60%, 80% { transform: translateX(-50%) translateY(0) rotate(3deg); }
+        }
+
+        .p12-img1.show {
+            animation: customShake 2s ease-in-out 1s forwards; 
+        }
+
+        .slide-down { transform: translateY(100%); }
+
+        .p5-asset-top {
+            position: absolute;
+            z-index: 6;                 
+            left: 50%;
+            transform: translateX(-50%);
+            object-fit: contain;
+            top: 85px;                  
+            width: 370px;               
+            height: auto;               
+        }
+
+        .p5-maps-link {
+            position: absolute;
+            z-index: 6;                 
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline-block;
+            bottom: 265px;               
+        }
+
+        .p5-maps-link img {
+            display: block;
+            object-fit: contain;
+            width: 370px;               
+            height: auto;               
+        }
+
+        .p5-countdown-container {
+            position: absolute;
+            z-index: 6;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 550px;
+            bottom: 140px; 
+        }
+
+        .p5-cd-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            width: 80px;
+            height: 80px;
+            background-color: #55483c; 
+        }
+
+        .p5-cd-number {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.25rem;
+            line-height: 1.2;
+            color: #f9f3ec; 
+        }
+
+        .p5-cd-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 2px;
+            color: #f9f3ec; 
+        }
+
+        .p5-anim {
+            opacity: 0;
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.18, 0.64, 1);
+        }
+        .p5-anim-top { transform: translateX(-50%) translateY(-40px); }
+        .p5-anim-bottom { transform: translateX(-50%) translateY(40px); }
+        .p5-anim-scale { transform: translateX(-50%) scale(0.9); }
+
+        .p5-anim.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+        .p5-delay-1 { transition-delay: 0.2s; }
+        .p5-delay-2 { transition-delay: 0.4s; }
+        .p5-delay-3 { transition-delay: 0.6s; }
+
+        .gift-container {
+            position: absolute;
+            top: calc(50% + var(--posisi-naik-turun-kontainer));
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 10;
+        }
+
+        .bank-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(85, 72, 60, 0.15);
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            width: 100%;
+            position: relative;
+        }
+
+        .gift-container .bank-card:nth-child(1) {
+            top: var(--jarak-bank1-naik-turun);
+        }
+        .gift-container .bank-card:nth-child(2) {
+            top: var(--jarak-bank2-naik-turun);
+        }
+
+        .gift-container .bank-card.png-asset {
+            position: relative !important;
+            left: unset !important;
+            aspect-ratio: auto !important; 
+            transform: scale(0.85);
+            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.18, 0.64, 1), top 0.3s ease;
+        }
+        
+        .gift-container .bank-card.png-asset.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .bank-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #55483c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .account-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #55483c;
+            color: #f9f3ec;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .account-box:active {
+            background-color: #3e342b;
+        }
+
+        .acc-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .owner-name {
+            font-size: 0.75rem;
+            color: #666;
+            font-weight: 500;
+            padding-left: 2px;
+        }
+
+        .icon-svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            display: block;
+        }
+
+        .rsvp-form-container {
+            width: 85%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(85, 72, 60, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            z-index: 10;
+            margin-top: 180px; 
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #55483c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .form-control {
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            padding: 8px 10px;
+            background-color: #fff;
+            border: 1px solid rgba(85, 72, 60, 0.25);
+            border-radius: 6px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #55483c;
+        }
+
+        textarea.form-control {
+            resize: none;
+            height: 75px; 
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+            background-color: #55483c;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #3e342b;
+        }
+
+        .comments-section {
+            width: 85%;
+            max-width: 420px;
+            margin-top: 15px;
+            margin-bottom: 30px; 
+            text-align: left;
+            z-index: 10;
+            position: relative !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+
+        .comments-count {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #f9f3ec;
+            border-bottom: 1px solid rgba(85, 72, 60, 0.15);
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 80px;
+            margin-bottom: 3%;
+        }
+        
+        .comments-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .comments-list::-webkit-scrollbar-track {
+            background: rgba(85, 72, 60, 0.05);
+            border-radius: 10px;
+        }
+        .comments-list::-webkit-scrollbar-thumb {
+            background: rgba(85, 72, 60, 0.4);
+            border-radius: 10px;
+        }
+
+        .comment-item {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(85, 72, 60, 0.1);
+            padding: 10px 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            animation: fadeInItem 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeInItem {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .comment-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #55483c;
+        }
+
+        .comment-badge {
+            font-size: 0.55rem;
+            font-weight: 600;
+            padding: 1px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .badge-hadir { background-color: #e2f0d9; color: #385723; }
+        .badge-tidak { background-color: #fce4d6; color: #c65911; }
+        .badge-belum { background-color: #fff2cc; color: #7f6000; }
+
+        .comment-text {
+            font-size: 0.7rem;
+            color: #444;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="semenjak.mp3" loop></audio>
+
+    <div class="app-container">
+
+        <div class="side-controls" id="side-controls">
+            <button class="ctrl-btn btn-nav-arrow" onclick="navigasiKe('awal')">
+                <img src="https://cdn-icons-png.flaticon.com/512/130/130906.png" style="width:100%; height:100%; object-fit:contain;" alt="Ke Awal">
+            </button>
+            <button class="ctrl-btn btn-music-ctrl music-rotating" id="music-toggle-btn" onclick="toggleMusik()">
+                <svg id="music-icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+            </button>
+            <button class="ctrl-btn btn-nav-arrow" onclick="navigasiKe('akhir')">
+                <img src="https://cdn-icons-png.flaticon.com/512/130/130907.png" style="width:100%; height:100%; object-fit:contain;" alt="Ke Akhir">
+            </button>
+        </div>
+
+        <div id="splash-screen">
+            <img src="made.png" class="bg-splash-full" alt="Splash Background">
+        </div>
+
+        <div id="main-cover">
+            <div class="guest-container">
+                <div class="guest-title"> Kepada Yth.</div>
+                <div class="guest-name" id="nama-tamu">Nama Tamu</div>
+            </div>
+            <button class="btn-open" onclick="bukaUndangan()">Open Invitation</button>
+        </div>
+
+        <div id="invitation-content">
+            
+            <section class="page h-medium" id="page1">
+                <img src="arrum.png" class="png-asset p1-img1 anim-top" alt="asset">
+            </section>
+
+            <section class="page h-short" id="page2">
+                <img src="we.png" class="png-asset p2-img1 anim-bottom" alt="asset">
+            </section>
+
+            <section class="page h-medium" id="page3">
+                <img src="nama.png" class="png-asset p3-img1 anim-left" alt="asset">
+            </section>
+
+            <div class="reveal-container" id="reveal-trigger">
+                <section class="sticky-reveal-base" id="reveal-bg">
+                    <img src="foto4.jpg" class="p5-reveal-asset" alt="asset-halaman-5">
+                    
+                    <img src="alamat.png" class="p5-asset-top p5-anim p5-anim-top p5-delay-1" alt="Aset Atas">
+
+                    <a href="https://maps.google.com" target="_blank" class="p5-maps-link p5-anim p5-anim-scale p5-delay-2">
+                        <img src="maps.png" alt="Lihat Lokasi">
+                    </a>
+
+                    <div class="p5-countdown-container p5-anim p5-anim-bottom p5-delay-3" id="p5-countdown">
+                        <div class="p5-cd-box">
+                            <span class="p5-cd-number" id="p5-days">00</span>
+                            <span class="p5-cd-label">Hari</span>
+                        </div>
+                        <div class="p5-cd-box">
+                            <span class="p5-cd-number" id="p5-hours">00</span>
+                            <span class="p5-cd-label">Jam</span>
+                        </div>
+                        <div class="p5-cd-box">
+                            <span class="p5-cd-number" id="p5-minutes">00</span>
+                            <span class="p5-cd-label">Menit</span>
+                        </div>
+                        <div class="p5-cd-box">
+                            <span class="p5-cd-number" id="p5-seconds">00</span>
+                            <span class="p5-cd-label">Detik</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="reveal-gate-top" id="reveal-top">
+                    <img src="waktu.png" class="png-asset p4-img1 anim-right" alt="asset-halaman-4">
+                </section>
+            </div>
+
+            <section class="page overlay-page" id="page6">
+                <img src="story.png" class="png-asset p6-img1 anim-bottom" alt="asset-halaman-6">
+            </section>
+
+            <section class="page overlay-page h-long" id="page7">
+                <img src="amplop.png" class="png-asset p7-img1 anim-bottom" alt="asset">
+            </section>
+
+            <section class="page overlay-page h-medium" id="page8">
+                <img src="azzariyat.png" class="png-asset p8-img1 anim-left" alt="asset">
+            </section>
+
+            <section class="page overlay-page" id="page8b">
+                <div class="photo-grid">
+                    <div class="grid-item-box" onclick="openLightbox('foto5.jpg')">
+                        <img src="foto5.jpg" class="png-asset grid-delay-1 anim-scale" alt="grid-1">
+                    </div>
+                    <div class="grid-item-box" onclick="openLightbox('foto6.jpg')">
+                        <img src="foto6.jpg" class="png-asset grid-delay-2 anim-scale" alt="grid-2">
+                    </div>
+                    <div class="grid-item-box" onclick="openLightbox('foto3.jpg')">
+                        <img src="foto3.jpg" class="png-asset grid-delay-3 anim-scale" alt="grid-3">
+                    </div>
+                    <div class="grid-item-box" onclick="openLightbox('foto4.jpg')">
+                        <img src="foto4.jpg" class="png-asset grid-delay-4 anim-scale" alt="grid-4">
+                    </div>
+                </div>
+            </section>
+
+            <section class="page overlay-page" id="page9">
+                <img src="frame.png" class="gallery-frame" alt="Frame Galeri">
+                <div class="gallery-container">
+                    <button class="nav-btn btn-left" onclick="moveSlide(-1)">❮</button>
+                    
+                    <div class="gallery-wrapper" id="slider">
+                        <div class="gallery-item-wrapper active" style="--posisi-foto: center 15%;" onclick="openLightbox('foto3.jpg')">
+                            <img src="foto3.jpg" class="gallery-item gi-1" alt="Foto 1">
+                        </div>
+                        <div class="gallery-item-wrapper" style="--posisi-foto: center 20%;" onclick="openLightbox('foto4.jpg')">
+                            <img src="foto4.jpg" class="gallery-item gi-2" alt="Foto 2">
+                        </div>
+                        <div class="gallery-item-wrapper" style="--posisi-foto: center 10%;" onclick="openLightbox('foto5.jpg')">
+                            <img src="foto5.jpg" class="gallery-item gi-3" alt="Foto 3">
+                        </div>
+                        <div class="gallery-item-wrapper" style="--posisi-foto: center center;" onclick="openLightbox('foto6.jpg')">
+                            <img src="foto6.jpg" class="gallery-item gi-4" alt="Foto 4">
+                        </div>
+                        <div class="gallery-item-wrapper" style="--posisi-foto: center 25%;" onclick="openLightbox('foto1.jpg')">
+                            <img src="foto1.jpg" class="gallery-item gi-5" alt="Foto 5">
+                        </div>
+                        <div class="gallery-item-wrapper" style="--posisi-foto: center center;" onclick="openLightbox('foto2.jpg')">
+                            <img src="foto2.jpg" class="gallery-item gi-6" alt="Foto 6">
+                        </div>
+                    </div>
+                    
+                    <button class="nav-btn btn-right" onclick="moveSlide(1)">❯</button>
+                </div>
+                <div class="frame-info-text">Klik foto di dalam frame untuk mengunduh</div>
+            </section>
+
+            <section class="page normal-flow-page" id="page10">
+                <img src="gift.png" class="png-asset p10-img1 anim-right" alt="asset">
+                
+                <div class="gift-container">
+                    <div class="bank-card png-asset">
+                        <div class="bank-name">Bank BNI</div>
+                        <div class="account-box" onclick="salinNoRek('1950375142', this)">
+                            <div class="acc-left">
+                                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                                <span class="num-text">1950375142</span>
+                            </div>
+                            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        </div>
+                        <div class="owner-name">a.n. MAWAR</div>
+                    </div>
+
+                    <div class="bank-card png-asset">
+                        <div class="bank-name">Bank BCA</div>
+                        <div class="account-box" onclick="salinNoRek('8275610280', this)">
+                            <div class="acc-left">
+                                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                                <span class="num-text">8275610280</span>
+                            </div>
+                            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        </div>
+                        <div class="owner-name">a.n. MUHAMMAD GAJALI</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page normal-flow-page" id="page11">
+                <img src="rsvp.png" class="png-asset p11-img1 anim-top" alt="asset">
+                
+                <div class="rsvp-form-container">
+                    <div class="form-group">
+                        <label>Nama</label>
+                        <input type="text" id="rsvp-name" class="form-control" placeholder="Masukkan nama Anda">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Kehadiran</label>
+                        <select id="rsvp-status" class="form-control">
+                            <option value="Hadir">Hadir</option>
+                            <option value="Tidak Hadir">Tidak Hadir</option>
+                            <option value="Belum Ditentukan">Belum Ditentukan</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ucapan</label>
+                        <textarea id="rsvp-message" class="form-control" placeholder="Tuliskan ucapan & doa restu Anda..."></textarea>
+                    </div>
+                    
+                    <div class="form-footer">
+                        <button type="button" class="btn-submit" id="btn-submit-rsvp" onclick="kirimUcapan()">Kirim</button>
+                    </div>
+                </div>
+
+                <div class="comments-section">
+                    <div class="comments-count" id="comments-title">0 Ucapan Terkirim</div>
+                    <div class="comments-list" id="comments-container" style="max-height: 250px; overflow-y: auto; padding-right: 4px;"></div>
+                    <div class="pagination-container" id="comments-pagination" style="justify-content: space-between; margin-top: 12px;"></div>
+                </div>
+            </section>
+
+            <section class="page normal-flow-page h-medium" id="page12">
+                <img src="love.png" class="png-asset p12-img1 anim-bottom" alt="asset">
+            </section>
+
+            <footer class="custom-footer-logo">
+                <img src="logo.png" alt="Logo Vendor">
+            </footer>
+
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">×</span>
+        <img src="" class="lightbox-img" id="lightbox-img" onclick="event.stopPropagation()">
+        <a href="" id="download-link" class="btn-download" download="wedding-photo.jpg" onclick="event.stopPropagation()">Download Photo</a>
+    </div>
+
+    <script>
+        const TARGET_COUNTDOWN = "2026-07-12T00:00:00"; 
+        
+        // PASTE URL WEB APP APPS SCRIPT ANDA DI SINI
+        const WEB_APP_URL = "PASANG_URL_WEB_APP_ANDA_DISINI";
+
+        let dataUcapan = [
+            { nama: "Latifa & Ilmi", status: "Hadir", teks: "Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, dan warahmah. Amin." },
+            { nama: "Hazel", status: "Hadir", teks: "Happy wedding! Sangat bahagia melihat momen indah ini." },
+            { nama: "Eden", status: "Belum Ditentukan", teks: "Selamat ya! Semoga dilancarkan seluruh rangkaian acaranya hingga hari H." }
+        ];
+        
+        let ucapanCurrentPage = 1;
+        const ucapanPerPage = 5;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get('to');
+        const elNamaTamu = document.getElementById('nama-tamu');
+        if (guestName && elNamaTamu) {
+            elNamaTamu.innerText = decodeURIComponent(guestName);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const splash = document.getElementById('splash-screen');
+            if (splash) {
+                setTimeout(() => {
+                    splash.classList.add('slide-up');
+                    setTimeout(() => {
+                        splash.style.display = 'none';
+                    }, 800); 
+                }, 1000); 
+            }
+            initCountdown();
+            ambilDataUcapan();
+        });
+
+        const content = document.getElementById('invitation-content');
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle-btn');
+        const sideControls = document.getElementById('side-controls');
+        
+        function bukaUndangan() {
+            const cover = document.getElementById('main-cover');
+            if (!cover || !content) return;
+
+            cover.classList.add('slide-down'); 
+            
+            if (audio && musicBtn) {
+                audio.play().then(() => {
+                    musicBtn.classList.add('music-rotating');
+                }).catch(err => console.log("Autoplay musik diblokir browser."));
+            }
+            
+            setTimeout(() => {
+                cover.style.display = 'none';
+                content.style.display = 'block';
+                content.style.overflowY = 'scroll';
+                if (sideControls) sideControls.classList.add('show');
+                
+                setTimeout(() => {
+                    const p1Img1 = document.querySelector('.p1-img1');
+                    if (p1Img1) p1Img1.classList.add('show');
+                }, 50);
+
+                startObserver(); 
+            }, 1000);
+        }
+
+        function navigasiKe(tujuan) {
+            if (!content) return;
+            if (tujuan === 'awal') {
+                content.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (tujuan === 'akhir') {
+                content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
+        function toggleMusik() {
+            if (!audio || !musicBtn) return;
+            const iconSvg = document.getElementById('music-icon-svg');
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.add('music-rotating');
+                if (iconSvg) iconSvg.innerHTML = `<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>`;
+            } else {
+                audio.pause();
+                musicBtn.classList.remove('music-rotating');
+                if (iconSvg) iconSvg.innerHTML = `<path d="M4.27 3L3 4.27l9 9v.28c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4v-1.73L19.73 21 21 19.73 4.27 3zM14 7h4V3h-6v5.18l2 2z"/>`;
+            }
+        }
+
+        let currentSlide = 0;
+        function moveSlide(direction) {
+            const slides = document.querySelectorAll('.gallery-item-wrapper');
+            if (slides.length === 0) return;
+
+            slides[currentSlide].classList.remove('active');
+
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            
+            slides[currentSlide].classList.add('active');
+        }
+
+        function openLightbox(src) {
+            const lbImg = document.getElementById('lightbox-img');
+            const dlLink = document.getElementById('download-link');
+            const lb = document.getElementById('lightbox');
+
+            if (lbImg && dlLink && lb) {
+                lbImg.src = src;
+                dlLink.href = src;
+                dlLink.setAttribute('download', src.split('/').pop());
+                lb.style.display = 'flex';
+            }
+        }
+        
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            if (lb) lb.style.display = 'none';
+        }
+
+        if (content) {
+            content.addEventListener('scroll', () => {
+                const trigger1 = document.getElementById('reveal-trigger');
+                const revealTop = document.getElementById('reveal-top');
+                
+                if (trigger1 && revealTop) {
+                    let rect = trigger1.getBoundingClientRect();
+                    const container = document.querySelector('.app-container');
+                    let containerHeight = container ? container.clientHeight : window.innerHeight;
+                    
+                    let progress = (-rect.top) / (trigger1.clientHeight - containerHeight);
+                    progress = Math.max(0, Math.min(1, progress));
+
+                    revealTop.style.clipPath = `inset(0% 0% ${progress * 100}% 0%)`;
+
+                    const p5Assets = document.querySelectorAll('.p5-anim');
+                    if (progress > 0.1) {
+                        p5Assets.forEach(asset => asset.classList.add('show'));
+                    } else {
+                        p5Assets.forEach(asset => asset.classList.remove('show'));
+                    }
+                }
+            });
+        }
+
+        function startObserver() {
+            const assets = document.querySelectorAll('.png-asset');
+            if (!content || assets.length === 0) return;
+
+            const observerOptions = { 
+                root: content, 
+                rootMargin: '0px 0px -40px 0px', 
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.target.classList.contains('p1-img1') || entry.target.classList.contains('p5-reveal-asset')) {
+                        return;
+                    }
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            }, observerOptions);
+
+            assets.forEach(asset => observer.observe(asset));
+        }
+
+        function initCountdown() {
+            const targetTime = new Date(TARGET_COUNTDOWN).getTime();
+            if (isNaN(targetTime)) return;
+
+            const elDays = document.getElementById('p5-days');
+            const elHours = document.getElementById('p5-hours');
+            const elMinutes = document.getElementById('p5-minutes');
+            const elSeconds = document.getElementById('p5-seconds');
+
+            if (!elDays || !elHours || !elMinutes || !elSeconds) return;
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const diff = targetTime - now;
+
+                if (diff <= 0) {
+                    elDays.innerText = "00";
+                    elHours.innerText = "00";
+                    elMinutes.innerText = "00";
+                    elSeconds.innerText = "00";
+                    clearInterval(intervalId);
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                elDays.innerText = days < 10 ? "0" + days : days;
+                elHours.innerText = hours < 10 ? "0" + hours : hours;
+                elMinutes.innerText = minutes < 10 ? "0" + minutes : minutes;
+                elSeconds.innerText = seconds < 10 ? "0" + seconds : seconds;
+            }
+
+            updateTimer();
+            const intervalId = setInterval(updateTimer, 1000);
+        }
+
+        function salinNoRek(text, element) {
+            navigator.clipboard.writeText(text).then(() => {
+                const textEl = element.querySelector('.num-text');
+                if (textEl) {
+                    const originalText = textEl.innerText;
+                    textEl.innerText = "Tersalin!";
+                    setTimeout(() => {
+                        textEl.innerText = originalText;
+                    }, 1500);
+                }
+            }).catch(err => console.error('Gagal menyalin teks: ', err));
+        }
+
+        function renderUcapan() {
+            const container = document.getElementById('comments-container');
+            const title = document.getElementById('comments-title');
+            const paginationContainer = document.getElementById('comments-pagination');
+            
+            if (!container || !title || !paginationContainer) return;
+            
+            title.innerText = `${dataUcapan.length} Ucapan Terkirim`;
+            container.innerHTML = "";
+
+            const startIndex = (ucapanCurrentPage - 1) * ucapanPerPage;
+            const endIndex = startIndex + ucapanPerPage;
+            const paginatedItems = dataUcapan.slice(startIndex, endIndex);
+
+            if (paginatedItems.length === 0 && ucapanCurrentPage > 1) {
+                ucapanCurrentPage--;
+                renderUcapan();
+                return;
+            }
+
+            paginatedItems.forEach(item => {
+                let badgeClass = "badge-belum";
+                if(item.status === "Hadir") badgeClass = "badge-hadir";
+                if(item.status === "Tidak Hadir") badgeClass = "badge-tidak";
+
+                const html = `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-name">${escapeHTML(item.nama)}</span>
+                            <span class="comment-badge ${badgeClass}">${item.status}</span>
+                        </div>
+                        <div class="comment-text">${escapeHTML(item.teks)}</div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+
+            paginationContainer.innerHTML = "";
+            const totalPages = Math.ceil(dataUcapan.length / ucapanPerPage);
+
+            if (totalPages > 1) {
+                const btnPrev = document.createElement('button');
+                btnPrev.className = 'btn-submit';
+                btnPrev.style.fontSize = '0.65rem';
+                btnPrev.style.padding = '6px 14px';
+                btnPrev.innerText = 'Sebelumnya';
+                btnPrev.disabled = ucapanCurrentPage === 1;
+                if(ucapanCurrentPage === 1) btnPrev.style.opacity = '0.4';
+                btnPrev.onclick = () => {
+                    if (ucapanCurrentPage > 1) {
+                        ucapanCurrentPage--;
+                        renderUcapan();
+                    }
+                };
+
+                const pageIndicator = document.createElement('span');
+                pageIndicator.style.fontSize = '0.7rem';
+                pageIndicator.style.color = '#55483c';
+                pageIndicator.style.fontWeight = '600';
+                pageIndicator.innerText = `${ucapanCurrentPage} / ${totalPages}`;
+
+                const btnNext = document.createElement('button');
+                btnNext.className = 'btn-submit';
+                btnNext.style.fontSize = '0.65rem';
+                btnNext.style.padding = '6px 14px';
+                btnNext.innerText = 'Selanjutnya';
+                btnNext.disabled = ucapanCurrentPage === totalPages;
+                if(ucapanCurrentPage === totalPages) btnNext.style.opacity = '0.4';
+                btnNext.onclick = () => {
+                    if (ucapanCurrentPage < totalPages) {
+                        ucapanCurrentPage++;
+                        renderUcapan();
+                    }
+                };
+
+                paginationContainer.appendChild(btnPrev);
+                paginationContainer.appendChild(pageIndicator);
+                paginationContainer.appendChild(btnNext);
+            }
+        }
+
+        function ambilDataUcapan() {
+            if (WEB_APP_URL === "PASANG_URL_WEB_APP_ANDA_DISINI") {
+                renderUcapan();
+                return;
+            }
+            
+            fetch(`${WEB_APP_URL}?action=read`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        dataUcapan = data;
+                    }
+                    renderUcapan();
+                })
+                .catch(err => {
+                    console.error("Gagal memuat data dari Google Sheet:", err);
+                    renderUcapan();
+                });
+        }
+
+        function kirimUcapan() {
+            const inputNama = document.getElementById('rsvp-name');
+            const inputStatus = document.getElementById('rsvp-status');
+            const inputMesej = document.getElementById('rsvp-message');
+            const btnSubmit = document.getElementById('btn-submit-rsvp');
+
+            if (!inputNama || !inputStatus || !inputMesej) return;
+
+            const nama = inputNama.value.trim();
+            const status = inputStatus.value;
+            const teks = inputMesej.value.trim();
+
+            if (!nama || !teks) {
+                alert("Silakan isi Nama dan Ucapan Anda terlebih dahulu.");
+                return;
+            }
+
+            if (WEB_APP_URL === "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exechttps://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec") {
+                dataUcapan.unshift({ nama, status, teks });
+                inputNama.value = "";
+                inputMesej.value = "";
+                ucapanCurrentPage = 1; 
+                renderUcapan();
+                return;
+            }
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerText = "Mengirim...";
+
+            const formData = new FormData();
+            formData.append('nama', nama);
+            formData.append('status', status);
+            formData.append('teks', teks);
+
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if(result.result === "success") {
+                    inputNama.value = "";
+                    inputMesej.value = "";
+                    ucapanCurrentPage = 1;
+                    ambilDataUcapan();
+                } else {
+                    alert("Gagal mengirim ucapan, silakan coba lagi.");
+                }
+            })
+            .catch(err => {
+                console.error("Error saat mengirim:", err);
+                // Fallback lokal jika jaringan error
+                dataUcapan.unshift({ nama, status, teks });
+                inputNama.value = "";
+                inputMesej.value = "";
+                ucapanCurrentPage = 1; 
+                renderUcapan();
+            })
+            .finally(() => {
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = "Kirim";
+            });
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+    </script>
+</body>
+</html>
