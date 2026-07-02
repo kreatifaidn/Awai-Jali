@@ -10,7 +10,7 @@
     <meta property="og:title" content="The Wedding of Mawar & Gajali">
     <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Anda untuk menghadiri acara pernikahan kami.">
     <meta property="og:url" content="https://alamatundangananda.com">
-    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> <meta property="og:image:width" content="1200">
+    <meta property="og:image" content="https://alamatundangananda.com/foto4.jpg"> <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
     <style>
@@ -73,7 +73,7 @@
             pointer-events: none;
         }
 
-        /* --- 2. Main Cover (PERBAIKAN STRUKTUR POSISI DI SINI) --- */
+        /* --- 2. Main Cover --- */
         #main-cover {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -81,10 +81,10 @@
             background-size: cover;
             display: flex; 
             flex-direction: column; 
-            justify-content: flex-end; /* Dorong konten ke area bawah gambar latar belakang secara konsisten */
+            justify-content: flex-end; 
             align-items: center; 
             text-align: center; 
-            padding-bottom: 12%; /* Memberikan jarak aman dari bawah layar hp/komputer */
+            padding-bottom: 12%; 
             padding-left: 20px;
             padding-right: 20px;
             z-index: 50;
@@ -92,8 +92,8 @@
         }
         
         .guest-container { 
-            margin-top: 0; /* Menghapus margin statis goib yang merusak layout */
-            margin-bottom: 15px; /* Jarak aman konstan ke tombol open */
+            margin-top: 0; 
+            margin-bottom: 15px; 
         }
         
         .guest-title { 
@@ -118,7 +118,7 @@
             color: #55483c; 
             background-color: transparent; 
             border: 1.5px solid #55483c;
-            padding: 10px 32px;     
+            padding: 8px 25px;     
             border-radius: 50px;     
             cursor: pointer;
             text-transform: uppercase; 
@@ -259,8 +259,8 @@
             --jarak-bank2-naik-turun: 50px;        
             
             /* PENGATURAN KUSTOM ASET (gift.png) HALAMAN 10 */
-            --p10-png-top: -4%;         /* Posisi Naik-Turun (Ubah % atau px sesuai keinginan) */
-            --p10-png-width: 90%;       /* Ukuran Lebar Aset (Ubah % atau px) */
+            --p10-png-top: -4%;         
+            --p10-png-width: 90%;       
         }
 
         /* --- KUSTOMISASI HALAMAN 11 --- */
@@ -273,8 +273,8 @@
             background-size: cover !important; 
             
             /* PENGATURAN KUSTOM ASET (rsvp.png) HALAMAN 11 */
-            --p11-png-top: -4%;         /* Posisi Naik-Turun (Ubah % atau px sesuai keinginan) */
-            --p11-png-width: 90%;       /* Ukuran Lebar Aset (Ubah % atau px) */
+            --p11-png-top: -4%;         
+            --p11-png-width: 90%;       
         }
 
         #page12 { min-height: 80vh; }
@@ -549,13 +549,11 @@
         .p7-img1   { width: 90%; top: 5%; }  
         .p8-img1   { width: 90%; top: 10%; }  
         
-        /* IMPLEMENTASI VARIABEL DINAMIS HALAMAN 10 */
         .p10-img1  { 
             width: var(--p10-png-width) !important; 
             top: var(--p10-png-top) !important; 
         }   
         
-        /* IMPLEMENTASI VARIABEL DINAMIS HALAMAN 11 */
         .p11-img1  { 
             width: var(--p11-png-width) !important; 
             top: var(--p11-png-top) !important; 
@@ -931,37 +929,53 @@
         }
 
         /* ==========================================================================
-           --- SOLUSI FIXED LAYOUT UNTUK LAPTOP / SCREEN BESAR ---
-           Aturan di bawah ini HANYA berjalan jika lebar browser minimal 768px (Laptop/Tablet)
+           --- SOLUSI NORMAL SCROLL DI LAPTOP & LAYAR BESAR ---
+           Mengizinkan container utama dan elemen pembungkus untuk mengikuti scroll normal
+           tanpa memotong isi ataupun merusak tata letak dan ukuran font.
            ========================================================================== */
         @media screen and (min-width: 768px) {
-            body {
-                background-color: #e5dac9; /* Background luar frame laptop biar elegan */
+            body, html {
+                overflow: auto !important;
+                height: auto !important;
             }
 
-            /* Mengunci paksa container utama menjadi mode rasio HP di tengah layar laptop */
             .app-container {
-                max-width: 450px !important; 
-                height: 95vh !important;
-                border-radius: 16px;
-                box-shadow: 0 20px 60px rgba(85, 72, 60, 0.25);
-                border: 6px solid #55483c; /* Membuat frame pelindung estetik */
+                max-width: 500px !important; 
+                height: auto !important;
+                position: relative !important;
+                box-shadow: none !important;
+                border: none !important;
             }
 
-            /* Memperbaiki tinggi sticky-reveal agar pas di dalam batasan frame laptop */
+            #splash-screen {
+                position: fixed !important;
+            }
+
+            #main-cover {
+                position: relative !important;
+                height: 100vh !important;
+            }
+
+            #invitation-content {
+                display: none; 
+                width: 100% !important;
+                height: auto !important;
+                overflow-y: visible !important;
+                overflow-x: hidden !important;
+            }
+
             .sticky-reveal-base, .reveal-gate-top {
-                height: 100% !important;
+                height: 100vh !important;
             }
+            
             .reveal-container {
-                height: 150% !important;
+                height: 150vh !important;
             }
 
-            /* Menyelaraskan ulang efek animasi asset ketika discroll di dalam frame */
             .png-asset.show {
                 transform: translateX(-50%) translateY(0) scale(1) !important;
             }
             
-            /* Sisi keamanan agar grid-item-box foto aman */
             .grid-item-box .png-asset {
                 object-fit: cover !important;
             }
@@ -1193,7 +1207,7 @@
 
     <script>
         const TARGET_COUNTDOWN = "2026-07-12T00:00:00"; 
-        const WEB_APP_URL = "PASANG_URL_WEB_APP_ANDA_DISINI";
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzA9O3HqDqjwKYD421oon7jGp9SBKq_dR9Bc--jVlybBWuGvGmUgea0mf_HFj5FqZM85g/exec";
 
         let dataUcapan = [
             { nama: "Latifa & Ilmi", status: "Hadir", teks: "Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, dan warahmah. Amin." },
@@ -1243,9 +1257,17 @@
             }
             
             setTimeout(() => {
-                cover.style.display = 'none';
-                content.style.display = 'block';
-                content.style.overflowY = 'scroll';
+                // Di layar besar, setelah open cover, kita biarkan logic container mengalir secara alami
+                if (window.innerWidth >= 768) {
+                    cover.style.display = 'none';
+                    content.style.display = 'block';
+                    content.style.overflowY = 'visible';
+                } else {
+                    cover.style.display = 'none';
+                    content.style.display = 'block';
+                    content.style.overflowY = 'scroll';
+                }
+                
                 if (sideControls) sideControls.classList.add('show');
                 
                 setTimeout(() => {
@@ -1258,11 +1280,18 @@
         }
 
         function navigasiKe(tujuan) {
-            if (!content) return;
             if (tujuan === 'awal') {
-                content.scrollTo({ top: 0, behavior: 'smooth' });
+                if (window.innerWidth >= 768) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else if (content) {
+                    content.scrollTo({ top: 0, behavior: 'smooth' });
+                }
             } else if (tujuan === 'akhir') {
-                content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' });
+                if (window.innerWidth >= 768) {
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                } else if (content) {
+                    content.scrollTo({ top: content.scrollHeight, behavior: 'smooth' });
+                }
             }
         }
 
@@ -1312,37 +1341,39 @@
             if (lb) lb.style.display = 'none';
         }
 
-        if (content) {
-            content.addEventListener('scroll', () => {
-                const trigger1 = document.getElementById('reveal-trigger');
-                const revealTop = document.getElementById('reveal-top');
+        function handleRevealScroll() {
+            const trigger1 = document.getElementById('reveal-trigger');
+            const revealTop = document.getElementById('reveal-top');
+            
+            if (trigger1 && revealTop) {
+                let rect = trigger1.getBoundingClientRect();
+                let containerHeight = (window.innerWidth >= 768) ? window.innerHeight : (document.querySelector('.app-container')?.clientHeight || window.innerHeight);
                 
-                if (trigger1 && revealTop) {
-                    let rect = trigger1.getBoundingClientRect();
-                    const container = document.querySelector('.app-container');
-                    let containerHeight = container ? container.clientHeight : window.innerHeight;
-                    
-                    let progress = (-rect.top) / (trigger1.clientHeight - containerHeight);
-                    progress = Math.max(0, Math.min(1, progress));
+                let progress = (-rect.top) / (trigger1.clientHeight - containerHeight);
+                progress = Math.max(0, Math.min(1, progress));
 
-                    revealTop.style.clipPath = `inset(0% 0% ${progress * 100}% 0%)`;
+                revealTop.style.clipPath = `inset(0% 0% ${progress * 100}% 0%)`;
 
-                    const p5Assets = document.querySelectorAll('.p5-anim');
-                    if (progress > 0.1) {
-                        p5Assets.forEach(asset => asset.classList.add('show'));
-                    } else {
-                        p5Assets.forEach(asset => asset.classList.remove('show'));
-                    }
+                const p5Assets = document.querySelectorAll('.p5-anim');
+                if (progress > 0.1) {
+                    p5Assets.forEach(asset => asset.classList.add('show'));
+                } else {
+                    p5Assets.forEach(asset => asset.classList.remove('show'));
                 }
-            });
+            }
         }
+
+        if (content) {
+            content.addEventListener('scroll', handleRevealScroll);
+        }
+        window.addEventListener('scroll', handleRevealScroll);
 
         function startObserver() {
             const assets = document.querySelectorAll('.png-asset');
-            if (!content || assets.length === 0) return;
+            if (assets.length === 0) return;
 
             const observerOptions = { 
-                root: content, 
+                root: (window.innerWidth >= 768) ? null : content, 
                 rootMargin: '0px 0px -40px 0px', 
                 threshold: 0.1 
             };
