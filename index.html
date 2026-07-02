@@ -10,7 +10,8 @@
     <meta property="og:title" content="The Wedding of Mawar & Gajali">
     <meta property="og:description" content="Tanpa mengurangi rasa hormat, kami mengundang Anda untuk menghadiri acara pernikahan kami.">
     <meta property="og:url" content="https://alamatundangananda.com">
-    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> <meta property="og:image:width" content="1200">
+    <meta property="og:image" content="https://alamatundangananda.com/foto1.jpg"> 
+    <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/jpeg">
     <style>
@@ -66,7 +67,6 @@
             object-position: center;
         }
 
-        /* PERBAIKAN: Ditambahkan pointer-events none agar tidak menghalangi klik cover */
         .slide-up { 
             transform: translateY(-100%); 
             opacity: 0 !important; 
@@ -215,7 +215,7 @@
         .page {
             position: relative;
             width: 100%;
-            min-height: 100vh; /* PERBAIKAN: Default diubah ke 100vh agar aman di semua jenis aspect ratio layar hp */
+            min-height: 100vh;
             height: auto;
             background-color: #f9f3ec;
             overflow: hidden;
@@ -249,30 +249,24 @@
         
         #page9  { min-height: 90vh; }
         
-        /* --- KUSTOMISASI HALAMAN 10 --- */
         #page10 { 
-            min-height: 110vh; /* PERBAIKAN: Ditambah space-nya agar gift container tidak keluar dari halaman di layar pendek */
+            min-height: 110vh; 
             background: url('foto2.jpg') no-repeat center center !important;
             background-size: cover !important; 
             --posisi-naik-turn-kontainer: 40px;   
             --jarak-bank1-naik-turun: 20px;        
             --jarak-bank2-naik-turun: 50px;        
-            
-            /* PENGATURAN KUSTOM ASET (gift.png) HALAMAN 10 */
             --p10-png-top: -4%;         
             --p10-png-width: 90%;       
         }
 
-        /* --- KUSTOMISASI HALAMAN 11 --- */
         #page11 { 
             height: auto; 
-            min-height: 160vh; /* PERBAIKAN: Dipertinggi secara dinamis agar ucapan list tidak menabrak footer atau terpotong bawahnya */
+            min-height: 160vh; 
             padding-top: 130px; 
             justify-content: flex-start; 
             background: url('foto1.jpg') no-repeat center center !important;
             background-size: cover !important; 
-            
-            /* PENGATURAN KUSTOM ASET (rsvp.png) HALAMAN 11 */
             --p11-png-top: -4%;         
             --p11-png-width: 90%;       
         }
@@ -573,10 +567,6 @@
 
         .slide-down { transform: translateY(100%); }
 
-        /* ==========================================================================
-           --- REVISI BESAR HALAMAN 5 AGAR TIDAK MENUMPUK DI HP LAYAR KECIL ---
-           Mengubah absolute kaku jadi susunan Flexbox yang fleksibel & responsif
-           ========================================================================== */
         #reveal-bg {
             display: flex;
             flex-direction: column;
@@ -586,7 +576,6 @@
             box-sizing: border-box;
         }
 
-        /* Lepas aturan absolute lama yang bikin tumpang tindih */
         #reveal-bg .p5-asset-top,
         #reveal-bg .p5-maps-link,
         #reveal-bg .p5-countdown-container {
@@ -598,7 +587,6 @@
             margin: 0 auto;
         }
 
-        /* Gambar info alamat dinamis */
         .p5-asset-top {
             width: 100%;
             max-width: 360px;
@@ -606,7 +594,6 @@
             object-fit: contain;
         }
 
-        /* Tombol Google Maps dinamis */
         .p5-maps-link {
             width: 100%;
             max-width: 340px;
@@ -621,7 +608,6 @@
             object-fit: contain;
         }
 
-        /* Container countdown dinamis */
         .p5-countdown-container {
             display: flex;
             gap: 10px;
@@ -661,7 +647,6 @@
             color: #f9f3ec; 
         }
 
-        /* Kontrol animasi fade-in halaman 5 */
         .p5-anim {
             opacity: 0;
             transform: scale(0.95);
@@ -670,7 +655,7 @@
 
         .gift-container {
             position: absolute;
-            top: calc(52% + var(--posisi-naik-turn-kontainer)); /* PERBAIKAN: Sedikit diturunkan posisinya agar proporsional */
+            top: calc(52% + var(--posisi-naik-turn-kontainer)); 
             left: 50%;
             transform: translate(-50%, -50%);
             width: 85%;
@@ -693,10 +678,10 @@
         }
 
         .gift-container .bank-card:nth-child(1) {
-            top: var(--jarak-bank1-naik-turun);
+            top: var(--jarak-bank1-naik-turn);
         }
         .gift-container .bank-card:nth-child(2) {
-            top: var(--jarak-bank2-naik-turun);
+            top: var(--jarak-bank2-naik-turn);
         }
 
         .gift-container .bank-card.png-asset {
@@ -930,17 +915,12 @@
 
         .pagination-container {
             display: flex;
-            justify-content: center;
+            justify(content): center;
             align-items: center;
             gap: 6px;
             margin-top: 10px;
         }
 
-        /* ==========================================================================
-           --- SOLUSI NORMAL SCROLL DI LAPTOP & LAYAR BESAR ---
-           Mengizinkan container utama dan elemen pembungkus untuk mengikuti scroll normal
-           tanpa memotong isi ataupun merusak tata letak dan ukuran font.
-           ========================================================================== */
         @media screen and (min-width: 768px) {
             body, html {
                 overflow: auto !important;
@@ -1039,7 +1019,6 @@
             <div class="reveal-container" id="reveal-trigger">
                 <section class="sticky-reveal-base" id="reveal-bg">
                     <img src="foto4.jpg" class="p5-reveal-asset" alt="asset-halaman-5">
-                    
                     <img src="alamat.png" class="p5-asset-top p5-anim" alt="Aset Atas">
 
                     <a href="https://maps.app.goo.gl/NiYYcTsSuFyC55fe6?g_st=aw" target="_blank" class="p5-maps-link p5-anim">
@@ -1261,7 +1240,10 @@
             if (audio && musicBtn) {
                 audio.play().then(() => {
                     musicBtn.classList.add('music-rotating');
-                }).catch(err => console.log("Autoplay musik diblokir browser."));
+                }).catch(err => {
+                    console.log("Autoplay musik diblokir browser, menunggu interaksi.");
+                    musicBtn.classList.remove('music-rotating');
+                });
             }
             
             setTimeout(() => {
@@ -1306,9 +1288,10 @@
             if (!audio || !musicBtn) return;
             const iconSvg = document.getElementById('music-icon-svg');
             if (audio.paused) {
-                audio.play();
-                musicBtn.classList.add('music-rotating');
-                if (iconSvg) iconSvg.innerHTML = `<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>`;
+                audio.play().then(() => {
+                    musicBtn.classList.add('music-rotating');
+                    if (iconSvg) iconSvg.innerHTML = `<path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>`;
+                }).catch(err => console.log("Gagal memutar musik:", err));
             } else {
                 audio.pause();
                 musicBtn.classList.remove('music-rotating');
@@ -1348,7 +1331,6 @@
             if (lb) lb.style.display = 'none';
         }
 
-        /* PERBAIKAN: Fungsi scroll dimodifikasi agar efek transisi p5-anim bekerja halus dengan susunan Flexbox baru */
         function handleRevealScroll() {
             const trigger1 = document.getElementById('reveal-trigger');
             const revealTop = document.getElementById('reveal-top');
@@ -1394,7 +1376,7 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.target.classList.contains('p1-img1') || entry.target.classList.contains('p5-reveal-asset')) {
+                    if (entry.target.classList.contains('p5-reveal-asset')) {
                         return;
                     }
                     if (entry.isIntersecting) {
@@ -1595,8 +1577,7 @@
                 }
             })
             .catch(err => {
-                console.error("Error saat mengirim:", err);
-                // Fallback lokal jika terjadi CORS block sementara pada metode POST
+                console.error("Error saat mengirim, menerapkan fallback lokal:", err);
                 dataUcapan.unshift({ nama, status, teks });
                 inputNama.value = "";
                 inputMesej.value = "";
@@ -1610,9 +1591,11 @@
         }
 
         function escapeHTML(str) {
-            return str.replace(/[&<>'"]/g, 
-                tag => ({ '&': '&', '<': '<', '>': '>', "'": "'", '"': '"' }[tag] || tag)
-            );
+            return str.replace(/&/g, '&amp;')
+                      .replace(/</g, '&lt;')
+                      .replace(/>/g, '&gt;')
+                      .replace(/'/g, '&#39;')
+                      .replace(/"/g, '&quot;');
         }
     </script>
 </body>
