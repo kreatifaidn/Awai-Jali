@@ -294,12 +294,13 @@
             z-index: 1;
             background-color: #f9f3ec;
             overflow: hidden;
-            /* PERBAIKAN HALAMAN 5: Menggunakan susunan Flexbox vertikal agar adaptif di HP pendek tanpa merusak ukuran */
+            /* PERBAIKAN HALAMAN 5: Mengatur ulang flexbox agar susunan teratur dan presisi */
             display: flex;
             flex-direction: column;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items: center;
             padding: 40px 0;
+            gap: 15px; /* Kontrol jarak antar aset utama */
         }
         
         .reveal-gate-top {
@@ -579,16 +580,17 @@
 
         .slide-down { transform: translateY(100%); }
 
-        /* PERBAIKAN HALAMAN 5: Mengubah absolute top/bottom statis menjadi posisi relatif fleksibel di dalam flex container */
+        /* PERBAIKAN HALAMAN 5: Mengubah margin-bottom negatif untuk merapatkan Aset 1 dan Aset 2 */
         .p5-asset-top {
             position: relative;
             z-index: 6;                 
             left: unset;
             transform: none;
             object-fit: contain;
-            width: 370px;               
-            max-width: 90%;
+            width: 100%;               
+            max-width: 370px; 
             height: auto;               
+            margin-bottom: -35px; /* PERBAIKAN: Diubah dari -5px agar lebih rapat ke bawah */
         }
 
         .p5-maps-link {
@@ -597,13 +599,15 @@
             left: unset;
             transform: none;
             display: inline-block;
+            width: 100%;
+            max-width: 370px; /* Batas lebar yang sama */
         }
 
         .p5-maps-link img {
             display: block;
             object-fit: contain;
-            width: 370px;               
-            max-width: 100%;
+            width: 100%;               
+            max-width: 370px;
             height: auto;               
         }
 
@@ -616,8 +620,9 @@
             gap: 12px;
             justify-content: center;
             align-items: center;
-            width: 90%;
-            max-width: 550px;
+            width: 100%;
+            max-width: 370px; /* Batas lebar yang sama agar sejajar simetris */
+            margin-top: 25px; /* Memberikan jarak longgar khusus untuk countdown */
         }
 
         .p5-cd-box {
@@ -627,7 +632,7 @@
             justify-content: center;
             border-radius: 6px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            width: 80px;
+            flex: 1; /* Mengisi ruang box countdown secara rata dalam max-width 370px */
             height: 80px;
             background-color: #55483c; 
         }
