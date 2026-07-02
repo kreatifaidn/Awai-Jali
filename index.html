@@ -254,7 +254,7 @@
             min-height: 110vh; /* PERBAIKAN: Ditambah space-nya agar gift container tidak keluar dari halaman di layar pendek */
             background: url('foto2.jpg') no-repeat center center !important;
             background-size: cover !important; 
-            --posisi-naik-turun-kontainer: 40px;   
+            --posisi-naik-turn-kontainer: 40px;   
             --jarak-bank1-naik-turun: 20px;        
             --jarak-bank2-naik-turun: 50px;        
             
@@ -573,45 +573,62 @@
 
         .slide-down { transform: translateY(100%); }
 
-        .p5-asset-top {
-            position: absolute;
-            z-index: 6;                 
-            left: 50%;
-            transform: translateX(-50%);
-            object-fit: contain;
-            top: 85px;                  
-            width: 370px;               
-            height: auto;               
+        /* ==========================================================================
+           --- REVISI BESAR HALAMAN 5 AGAR TIDAK MENUMPUK DI HP LAYAR KECIL ---
+           Mengubah absolute kaku jadi susunan Flexbox yang fleksibel & responsif
+           ========================================================================== */
+        #reveal-bg {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            align-items: center;
+            padding: 5vh 20px; 
+            box-sizing: border-box;
         }
 
+        /* Lepas aturan absolute lama yang bikin tumpang tindih */
+        #reveal-bg .p5-asset-top,
+        #reveal-bg .p5-maps-link,
+        #reveal-bg .p5-countdown-container {
+            position: relative !important;
+            top: unset !important;
+            bottom: unset !important;
+            left: unset !important;
+            transform: none !important;
+            margin: 0 auto;
+        }
+
+        /* Gambar info alamat dinamis */
+        .p5-asset-top {
+            width: 100%;
+            max-width: 360px;
+            max-height: 38vh; 
+            object-fit: contain;
+        }
+
+        /* Tombol Google Maps dinamis */
         .p5-maps-link {
-            position: absolute;
-            z-index: 6;                 
-            left: 50%;
-            transform: translateX(-50%);
-            display: inline-block;
-            bottom: 265px;               
+            width: 100%;
+            max-width: 340px;
+            max-height: 12vh;
+            display: block;
         }
 
         .p5-maps-link img {
             display: block;
+            width: 100%;
+            max-height: 12vh;
             object-fit: contain;
-            width: 370px;               
-            height: auto;               
         }
 
+        /* Container countdown dinamis */
         .p5-countdown-container {
-            position: absolute;
-            z-index: 6;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
             align-items: center;
-            width: 90%;
-            max-width: 550px;
-            bottom: 140px; 
+            width: 100%;
+            max-width: 340px;
         }
 
         .p5-cd-box {
@@ -621,15 +638,15 @@
             justify-content: center;
             border-radius: 6px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            width: 80px;
-            height: 80px;
+            width: 72px;
+            height: 72px;
             background-color: #55483c; 
         }
 
         .p5-cd-number {
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             line-height: 1.2;
             color: #f9f3ec; 
         }
@@ -637,32 +654,23 @@
         .p5-cd-label {
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 2px;
             color: #f9f3ec; 
         }
 
+        /* Kontrol animasi fade-in halaman 5 */
         .p5-anim {
             opacity: 0;
-            transition: opacity 1s ease-out, transform 1s cubic-bezier(0.34, 1.18, 0.64, 1);
+            transform: scale(0.95);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .p5-anim-top { transform: translateX(-50%) translateY(-40px); }
-        .p5-anim-bottom { transform: translateX(-50%) translateY(40px); }
-        .p5-anim-scale { transform: translateX(-50%) scale(0.9); }
-
-        .p5-anim.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0) scale(1);
-        }
-        .p5-delay-1 { transition-delay: 0.2s; }
-        .p5-delay-2 { transition-delay: 0.4s; }
-        .p5-delay-3 { transition-delay: 0.6s; }
 
         .gift-container {
             position: absolute;
-            top: calc(52% + var(--posisi-naik-turun-kontainer)); /* PERBAIKAN: Sedikit diturunkan posisinya agar proporsional */
+            top: calc(52% + var(--posisi-naik-turn-kontainer)); /* PERBAIKAN: Sedikit diturunkan posisinya agar proporsional */
             left: 50%;
             transform: translate(-50%, -50%);
             width: 85%;
@@ -1032,13 +1040,13 @@
                 <section class="sticky-reveal-base" id="reveal-bg">
                     <img src="foto4.jpg" class="p5-reveal-asset" alt="asset-halaman-5">
                     
-                    <img src="alamat.png" class="p5-asset-top p5-anim p5-anim-top p5-delay-1" alt="Aset Atas">
+                    <img src="alamat.png" class="p5-asset-top p5-anim" alt="Aset Atas">
 
-                    <a href="https://maps.app.goo.gl/NiYYcTsSuFyC55fe6?g_st=aw" target="_blank" class="p5-maps-link p5-anim p5-anim-scale p5-delay-2">
+                    <a href="https://maps.app.goo.gl/NiYYcTsSuFyC55fe6?g_st=aw" target="_blank" class="p5-maps-link p5-anim">
                         <img src="maps.png" alt="Lihat Lokasi">
                     </a>
 
-                    <div class="p5-countdown-container p5-anim p5-anim-bottom p5-delay-3" id="p5-countdown">
+                    <div class="p5-countdown-container p5-anim" id="p5-countdown">
                         <div class="p5-cd-box">
                             <span class="p5-cd-number" id="p5-days">00</span>
                             <span class="p5-cd-label">Hari</span>
@@ -1340,6 +1348,7 @@
             if (lb) lb.style.display = 'none';
         }
 
+        /* PERBAIKAN: Fungsi scroll dimodifikasi agar efek transisi p5-anim bekerja halus dengan susunan Flexbox baru */
         function handleRevealScroll() {
             const trigger1 = document.getElementById('reveal-trigger');
             const revealTop = document.getElementById('reveal-top');
@@ -1354,10 +1363,16 @@
                 revealTop.style.clipPath = `inset(0% 0% ${progress * 100}% 0%)`;
 
                 const p5Assets = document.querySelectorAll('.p5-anim');
-                if (progress > 0.1) {
-                    p5Assets.forEach(asset => asset.classList.add('show'));
+                if (progress > 0.05) {
+                    p5Assets.forEach(asset => {
+                        asset.style.opacity = "1";
+                        asset.style.transform = "scale(1)";
+                    });
                 } else {
-                    p5Assets.forEach(asset => asset.classList.remove('show'));
+                    p5Assets.forEach(asset => {
+                        asset.style.opacity = "0";
+                        asset.style.transform = "scale(0.95)";
+                    });
                 }
             }
         }
