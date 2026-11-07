@@ -1428,7 +1428,7 @@
                     elHours.innerText = "00";
                     elMinutes.innerText = "00";
                     elSeconds.innerText = "00";
-                    clearInterval(intervalId);
+                    if (typeof intervalId !== 'undefined') clearInterval(intervalId);
                     return;
                 }
 
